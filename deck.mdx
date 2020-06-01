@@ -1,0 +1,166 @@
+import { themes, Split, SplitRight } from 'mdx-deck';
+export const theme = themes.yellow;
+
+# Webpack 5 Static Orchestration
+
+Jacob Ebey
+
+---
+
+# Agenda
+
+- What is Webpack 5 Module Federation?
+
+- How dynamic module loading works
+
+- What this looks like in use today
+
+- Towards the future!
+  - Node.js import streaming
+  - Dynamic hosts
+  - Production HMR and Static Orchestration
+
+---
+
+# What is Webpack 5 Module Federation?
+
+Multiple separate builds should form a single application.
+
+These separate builds should not have dependencies between each other,
+so they can be developed and deployed individually.
+
+This is often known as Micro-Frontends, but is not limited to that.
+
+---
+
+## Module Federation building blocks
+
+  - ContainerPlugin
+    - Creates an aditional entry point in the build output
+    - Uses OverridablesPlugin internally
+
+  - ContainerReferencePlugin
+    - Allows you to import remote modules
+    - Calls the overridables API
+
+  - ModuleFederationPlugin
+    - Combines ContainerPlugin and ContainerReferencePlugin
+    - Simply a convenience layer
+
+---
+
+# How dynamic module loading works
+
+- Promise based
+
+- Target dependent
+  - `web` jsonp (script tag injection)
+  - `node` combination of require.cache and file system reads
+
+---
+
+import webImportFlow from './images/web-import.svg';
+
+## `import` in browser land
+
+<img src={webImportFlow} />
+
+<br />
+
+---
+
+import nodeImportFlow from './images/node-import.svg';
+
+## `import` in Node.js
+
+<img src={nodeImportFlow} />
+
+<br />
+
+---
+
+# How this is used today
+
+- Code Splitting and lazy loading in the browser
+
+  - Reduce initial payload transfer
+
+  - Dynamically select a component for render
+
+---
+
+import remoteEntry from './images/remote-entry.png';
+
+<SplitRight>
+
+  <img src={remoteEntry} style={{ padding: '2rem' }} />
+
+  ## Useage in Module Federation
+
+  - Each host in webpack creates a secondary entry file on build
+
+  - Entry is essentially a mapping of it exposes modules
+
+  - Each module that host exposes is dynamically imported when requested
+
+</SplitRight>
+
+---
+
+import moduleFederation from './images/module-federation-plugin.png';
+
+<SplitRight>
+
+  <img src={moduleFederation} style={{ padding: '2rem' }} />
+
+  # Towards the future
+
+  Stream your `import`'s from remote file systems
+
+  Dynamic hosts
+
+  Production HMR
+
+  Static Orchestration
+
+</SplitRight>
+
+---
+
+import dashboard from './images/dashboard.jpg';
+
+<img src={dashboard} style={{ padding: '2rem' }} />
+
+---
+
+import federatedGraph from './images/federated-graph.svg';
+
+<Split>
+
+  <img src={federatedGraph} style={{ height: '100%', width: 'auto' }} />
+
+  # lululemon's graph
+
+  Apollo Federation without the network latancy
+
+  Orchestrated with Webpack 5 Module Federation
+
+  Immutable modules between gateway deploys
+
+</Split>
+
+---
+
+import others from './images/others.png';
+
+# Other players
+
+<img src={others} style={{ maxWidth: 800 }} />
+
+<br /><br /><br />
+
+---
+
+# Q&A
+
+@jebey on Slack
